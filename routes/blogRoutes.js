@@ -10,9 +10,9 @@ const router = express.Router();
 router.post('/', upload.single('image'), async (req, res) => {
   try {
     const { title, content, category } = req.body;
-    const image = req.file.path;
+    const imageUrl = req.file.path;
 
-    const newBlog = new Blog({ title, content, category, image});
+    const newBlog = new Blog({ title, content, category, imageUrl });
     await newBlog.save();
 
     res.status(201).json({ message: 'Blog created', blog: newBlog });
@@ -45,10 +45,10 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', upload.single('image'), async (req, res) => {
   try {
     const { title, content, category } = req.body;
-    const image = req.file ? req.file.path : undefined;
+    const imageUrl = req.file ? req.file.path : undefined;
 
     const updateFields = { title, content, category };
-    if (image) updateFields.image = image;
+    if (imageUrl) updateFields.imageUrl = imageUrl;
 
     const blog = await Blog.findByIdAndUpdate(req.params.id, updateFields, { new: true });
     res.json({ message: 'Updated', blog });
