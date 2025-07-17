@@ -45,10 +45,10 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', upload.single('image'), async (req, res) => {
   try {
     const { title, content, category } = req.body;
-    const imageUrl = req.file ? req.file.path : undefined;
+    const image = req.file ? req.file.path : undefined;
 
     const updateFields = { title, content, category };
-    if (imageUrl) updateFields.imageUrl = imageUrl;
+    if (image) updateFields.image = image;
 
     const blog = await Blog.findByIdAndUpdate(req.params.id, updateFields, { new: true });
     res.json({ message: 'Updated', blog });
